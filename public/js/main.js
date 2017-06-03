@@ -84,10 +84,11 @@
 		});
 
 		gameForm.addEventListener('submit', () => {
-			gameState += 1;
-			currentState = gameStates[gameState];
-			showGameScreen(playerInfo[currentPlayer]);
-			const otherPlayer = playerInfo[players[(playerIdx + 1) % 2]]
+			console.log(gameForm);
+			const guessInputVal = gameForm.getElementsByTagName('guess-input');
+			console.log(guessInputVal);
+			const otherPlayer = playerInfo[changePlayer(currentPlayer)]
+			console.log(otherPlayer);
 			const buckNannObj = calcBucksAndNannies();
 		});
 	}
