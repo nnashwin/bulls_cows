@@ -21,15 +21,33 @@
 	function showLoginScreen (currentPlayer, gameForm) {
 		gameForm.style.display = 'none';
 
-		const playerNumber = document.getElementById('player-number')
-		playerNumber.innerHTML = `The current player is Player ${currentPlayer}, please enter your nickname and passcode`;
+		const playerInput = document.getElementById('player-input');
+		const playerString = currentPlayer.charAt(0).toUpperCase() + currentPlayer.slice(1, currentPlayer.length - 1) + ' ' + currentPlayer.slice(currentPlayer.length - 1)
+
+		playerInput.innerHTML = `The current player is ${playerString}, please enter your nickname and passcode`;
+	}
+
+	function showGameScreen (currentPlayerObj) {
+		const playerNick = document.getElementById('player-nickname');
+		playerNick.innerHTML = `${currentPlayerObj.nickname}`;
+	}
+
+	function changePlayer (playerStr) {
+		if (playerStr === 'player1') {
+			return 'player2';
+		} else {
+			return 'player1';
+		}
 	}
 
 	function onReady () {
-		var gameStates = ['login1', 'login2', 'play', 'gameOver'];
+		const gameStates = ['login1', 'login2', 'play', 'gameOver'];
+		let currentPlayer = 'player1';
+
 		var playerInfo = {};
-		let currentPlayer = 1;
+
 		var gameState = 0;
+
 		const loginForm = document.getElementById('login-form');
 		const gameForm = document.getElementById('game-form');
 		
@@ -37,7 +55,6 @@
 		let currentState = gameStates[gameState];
 
 		showLoginScreen(currentPlayer, gameForm);
-			
 
 		loginForm.addEventListener('submit', () => {
 			const playerObj = {};
@@ -49,7 +66,7 @@
 				playerObj[keyStr] = input.value
 			});
 
-			playerInfo[`Player${currentPlayer}`] = playerObj;
+			playerInfo[currentPlayer] = playerObj;
 
 			gameState += 1;
 			currentState = gameStates[gameState];
@@ -57,17 +74,21 @@
 			if (currentState === 'play') {
 				gameForm.style.display = 'block';
 				loginForm.style.display = 'none';
+				currentPlayer = changePlayer(currentPlayer);
+				showGameScreen(playerInfo[currentPlayer]);
 			} else if (currentState !== 'play') {
 				clearFormInputs(loginForm);
-				currentPlayer = (currentPlayer % 2) + 1
+				currentPlayer = changePlayer(currentPlayer);
 				showLoginScreen(currentPlayer, gameForm);
 			}
 		});
 
 		gameForm.addEventListener('submit', () => {
 			gameState += 1;
-			currentPlayer = (currentPlayer % 2) + 1;
 			currentState = gameStates[gameState];
+			showGameScreen(playerInfo[currentPlayer]);
+			const otherPlayer = playerInfo[players[(playerIdx + 1) % 2]]
+			const buckNannObj = calcBucksAndNannies();
 		});
 	}
 
