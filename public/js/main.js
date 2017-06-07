@@ -14,8 +14,31 @@
 		});
 	}
 
-	function calcBucksAndNannies (inputStr, playerStr) {
-		
+	function calcBucksAndNannies (playerStr, inputStr) {
+		let bucks = 0;
+		let nannies = 0;
+		const playerHash = {}
+
+		for (let i = 0; i < playerStr.length; i++) {
+			const playerChar = playerStr.charAt(i);
+
+			typeof playerHash[playerChar] === 'undefined' ? playerHash[playerChar] = 1 : playerHash[playerChar] += 1;
+		}
+
+		for (let i = 0; i < playerStr.length; i += 1) {
+			const playerChar = playerStr.charAt(i);
+			const inputChar = inputStr.charAt(i);
+			if (playerChar === inputChar) {
+				bucks += 1;
+				playerHash[playerChar] -= 1;
+			} else if (playerHash[inputChar]) {
+				nannies += 1;
+				playerHash[inputChar] -= 1;
+			}
+
+		}
+
+		return {bucks, nannies};
 	}
 
 	function showLoginScreen (currentPlayer, gameForm) {
@@ -50,7 +73,9 @@
 
 		const loginForm = document.getElementById('login-form');
 		const gameForm = document.getElementById('game-form');
+		const switchPlayerDiv = document.getElementById('switch-players');
 		
+		switchPlayerDiv.style.display = 'none';
 
 		let currentState = gameStates[gameState];
 
@@ -84,12 +109,22 @@
 		});
 
 		gameForm.addEventListener('submit', () => {
-			console.log(gameForm);
-			const guessInputVal = gameForm.getElementsByTagName('guess-input');
-			console.log(guessInputVal);
+			const guessInputVal = gameForm.getElementsByTagName('input')[0].value;
+			const guessResult = document.getElementById('guess-result');
 			const otherPlayer = playerInfo[changePlayer(currentPlayer)]
-			console.log(otherPlayer);
-			const buckNannObj = calcBucksAndNannies();
+			const buckNannObj = calcBucksAndNannies(otherPlayer.passcode, guessInputVal);
+			switchPlayerDiv.style.display = 'block';
+			let frag = document.createDocumentFragment();
+			let textDiv = frag.appendChild(document.createElement('div'));
+			textDiv.appendChild(document.createTextNode(`${currentPlayer} guessed ${buckNannObj.bucks} bucks and ${buckNannObj.nannies} nannies`));
+			switchPlayerDiv.appendChild(frag);
+		});
+
+		switchPlayerDiv.addEventListener('click', (e) => {
+			currentPlayer = changePlayer(currentPlayer);
+			switchPlayerDiv.style.display = 'none';
+			clearFormInputs(gameForm);
+			showGameScreen(playerInfo[currentPlayer]);
 		});
 	}
 
