@@ -122,7 +122,6 @@
 
 		switchPlayerDiv.addEventListener('click', (e) => {
 			currentPlayer = changePlayer(currentPlayer);
-			switchPlayerDiv.style.display = 'none';
 			clearFormInputs(gameForm);
 			showGameScreen(playerInfo[currentPlayer]);
 		});
