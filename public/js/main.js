@@ -115,12 +115,15 @@
 
 			if (buckNannObj.bucks === otherPlayer.passcode.length) {
 				gameForm.style.display = 'none';
+				guessResult.style.display = 'none';
+				switchPlayerDiv.style.display = 'none';
 				return endGame(playerInfo[currentPlayer]);
 			} else {
 				switchPlayerDiv.style.display = 'block';
 				let frag = document.createDocumentFragment();
 				let textDiv = frag.appendChild(document.createElement('div'));
 				textDiv.appendChild(document.createTextNode(`${currentPlayer} guessed ${buckNannObj.bucks} bucks and ${buckNannObj.nannies} nannies`));
+				textDiv.style.marginTop = "10px";
 				switchPlayerDiv.appendChild(frag);
 			}
 			
