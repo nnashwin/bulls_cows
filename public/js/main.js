@@ -62,14 +62,17 @@
 			return 'player1';
 		}
 	}
+	function endGame (winningPlayer) {
+		const winDiv = document.createElement('h1');
+		const winMsg = document.createTextNode(`${winningPlayer['nickname']}, you win!`);
+		winDiv.appendChild(winMsg);
+		document.getElementsByTagName('body')[0].appendChild(winDiv);
+	}
 
 	function onReady () {
-		const gameStates = ['login1', 'login2', 'play', 'gameOver'];
 		let currentPlayer = 'player1';
 
 		var playerInfo = {};
-
-		var gameState = 0;
 
 		const loginForm = document.getElementById('login-form');
 		const gameForm = document.getElementById('game-form');
@@ -77,7 +80,6 @@
 		
 		switchPlayerDiv.style.display = 'none';
 
-		let currentState = gameStates[gameState];
 
 		showLoginScreen(currentPlayer, gameForm);
 
@@ -93,15 +95,12 @@
 
 			playerInfo[currentPlayer] = playerObj;
 
-			gameState += 1;
-			currentState = gameStates[gameState];
-
-			if (currentState === 'play') {
+			if (typeof playerInfo['player1'] !== 'undefined' && typeof playerInfo['player2'] !== 'undefined') {
 				gameForm.style.display = 'block';
 				loginForm.style.display = 'none';
 				currentPlayer = changePlayer(currentPlayer);
 				showGameScreen(playerInfo[currentPlayer]);
-			} else if (currentState !== 'play') {
+			} else {
 				clearFormInputs(loginForm);
 				currentPlayer = changePlayer(currentPlayer);
 				showLoginScreen(currentPlayer, gameForm);
@@ -113,11 +112,18 @@
 			const guessResult = document.getElementById('guess-result');
 			const otherPlayer = playerInfo[changePlayer(currentPlayer)]
 			const buckNannObj = calcBucksAndNannies(otherPlayer.passcode, guessInputVal);
-			switchPlayerDiv.style.display = 'block';
-			let frag = document.createDocumentFragment();
-			let textDiv = frag.appendChild(document.createElement('div'));
-			textDiv.appendChild(document.createTextNode(`${currentPlayer} guessed ${buckNannObj.bucks} bucks and ${buckNannObj.nannies} nannies`));
-			switchPlayerDiv.appendChild(frag);
+
+			if (buckNannObj.bucks === otherPlayer.passcode.length) {
+				gameForm.style.display = 'none';
+				return endGame(playerInfo[currentPlayer]);
+			} else {
+				switchPlayerDiv.style.display = 'block';
+				let frag = document.createDocumentFragment();
+				let textDiv = frag.appendChild(document.createElement('div'));
+				textDiv.appendChild(document.createTextNode(`${currentPlayer} guessed ${buckNannObj.bucks} bucks and ${buckNannObj.nannies} nannies`));
+				switchPlayerDiv.appendChild(frag);
+			}
+			
 		});
 
 		switchPlayerDiv.addEventListener('click', (e) => {
