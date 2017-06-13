@@ -62,11 +62,17 @@
 			return 'player1';
 		}
 	}
-	function endGame (winningPlayer) {
+	function endGame (winningPlayer, victoryImg) {
 		const winDiv = document.createElement('h1');
+		const goatDiv = document.createElement('div');
+		winDiv.style.marginLeft = '9px';
+		winDiv.style.textAlign = 'center';
 		const winMsg = document.createTextNode(`${winningPlayer['nickname']}, you win!`);
 		winDiv.appendChild(winMsg);
-		document.getElementsByTagName('body')[0].appendChild(winDiv);
+		goatDiv.appendChild(victoryImg);
+		document.getElementsByTagName('body')[0]
+			.appendChild(winDiv)
+			.appendChild(goatDiv);
 	}
 
 	function onReady () {
@@ -77,9 +83,18 @@
 		const loginForm = document.getElementById('login-form');
 		const gameForm = document.getElementById('game-form');
 		const switchPlayerDiv = document.getElementById('switch-players');
+		const goatImage = new Image();
+		let randomGoatNum = Math.floor(Math.random()*51);
+
+		// convert the random goat num to a string that matches the picture strings
+		if (randomGoatNum.toString().length === 2) {
+			randomGoatNum = `0${randomGoatNum}`;
+		} else if (randomGoatNum.toString().length === 1) {
+			randomGoatNum = `00${randomGoatNum}`;
+		}
+		goatImage.src = `../goats/goat_${randomGoatNum}.jpg`;
 		
 		switchPlayerDiv.style.display = 'none';
-
 
 		showLoginScreen(currentPlayer, gameForm);
 
@@ -117,7 +132,7 @@
 				gameForm.style.display = 'none';
 				guessResult.style.display = 'none';
 				switchPlayerDiv.style.display = 'none';
-				return endGame(playerInfo[currentPlayer]);
+				return endGame(playerInfo[currentPlayer], goatImage);
 			} else {
 				switchPlayerDiv.style.display = 'block';
 				let frag = document.createDocumentFragment();
