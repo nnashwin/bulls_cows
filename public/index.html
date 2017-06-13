@@ -4,24 +4,32 @@
 	<meta charset="UTF-8">
 	<title>Bucks and Nannies</title>
 	<script src="./js/main.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 <body>
+	<header class="ta_c fz_80 bgc_skyblue">Bucks and Nannies Baaaanner</header>
 	<form action="javascript:void(0)" id="login-form">
-		<div id="player-input"></div>
-		<input id="nickname-entry" type="text" />
-		<label for="nickname-entry">Enter the nickname you want to be known as.</label>
-		<input id="passcode-entry" type="text" />
-		<label for="passcode-entry">Enter the passcode you desire.  It must be a sequence of 4 different numbers</label>
-		<button id='player-info-submit' type="submit">Submit</button>
+		<div id="player-input" class="ml_9"></div>
+		<div id="nickname" class="mt_20 ml_9">
+			<input id="nickname-entry" type="text" />
+			<label for="nickname-entry">Enter the nickname you want to be known as.</label>
+		</div>
+		<div id="passcode" class="mt_20 ml_9">
+			<input id="passcode-entry" type="password" />
+			<label for="passcode-entry">Enter the passcode you desire.  It must be a sequence of 4 different numbers</label>
+		</div>
+		<button id='player-info-submit' type="submit" class="mt_20 ml_9">Submit</button>
 	</form>
 	<form action="javascript:void(0)" id="game-form">
-		<div id="player-nickname"></div>
-		<input id="guess-input" type="text" />
-		<label for="guess-input">Enter the number you think the other person set.</label>
-		<div id="guess-result"></div>
-		<button id="game-submit" type="submit">Submit</button>
+		<div id="player-nickname" class="mt_20 ml_9"></div>
+		<div class="mt_20 ml_9">
+			<input id="guess-input" type="text" />
+			<label for="guess-input">Enter the number you think the other person set.</label>
+		</div>
+		<div id="guess-result" class="mt_20 ml_9"></div>
+		<button id="game-submit" type="submit" class="ml_9 d_f">Submit</button>
 	</form>
-	<div id="switch-players">
+	<div id="switch-players" class="mt_20 ml_9">
 		<button>Next Player</button>
 	</div>
 </body>
