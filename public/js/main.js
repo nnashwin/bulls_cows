@@ -50,6 +50,14 @@
 		playerInput.innerHTML = `The current player is ${playerString}, please enter your nickname and passcode`;
 	}
 
+	function toggleGameForm (displayStatus) {
+		if (gameForm.style.display === 'none') {
+			gameForm.style.display = 'block';
+		} else {
+			gameForm.style.display === 'none';
+		}
+	}
+
 	function showGameScreen (currentPlayerObj) {
 		const playerNick = document.getElementById('player-nickname');
 		playerNick.innerHTML = `${currentPlayerObj.nickname}`;
@@ -62,6 +70,7 @@
 			return 'player1';
 		}
 	}
+	
 	function endGame (winningPlayer, victoryImg) {
 		const winDiv = document.createElement('h1');
 		const goatDiv = document.createElement('div');
